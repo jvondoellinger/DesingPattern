@@ -1,0 +1,2 @@
+Foi-se utilizado o java 23 para rodar a aplicação!
+Com ajuda o intellij, foi utilizado o terminal integrado da ide
