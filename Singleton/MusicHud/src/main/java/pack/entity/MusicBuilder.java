@@ -7,9 +7,9 @@ public class MusicBuilder {
     }
     public static MusicBuilder builder() { return new MusicBuilder(); }
 
-    public Music build() { return this.music; }
+    public Music build() { return this.music; } // return music
 
-    public MusicBuilder name(String name) {
+    public MusicBuilder name(String name) { // Builder set name
         this.music.name = name;
         return this;
     }

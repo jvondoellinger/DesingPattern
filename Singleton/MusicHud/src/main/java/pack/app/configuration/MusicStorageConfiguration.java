@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+// a propria classe libera sua instancia de forma singletom
+// ex: Users (list<user> users) - static private, mas com um metodo: getInstance(); em public
+
 public class MusicStorageConfiguration {
     private MusicStorageConfiguration() {}
 

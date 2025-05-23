@@ -2,6 +2,8 @@ package pack.console.operations;
 
 import java.util.Scanner;
 
+// Lida com a fabricação da instancia!
+
 public class OperationFactory {
     private static final Scanner scanner = new Scanner(System.in).useDelimiter("\n");
 
