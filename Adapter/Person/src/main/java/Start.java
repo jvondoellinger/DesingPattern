@@ -46,7 +46,7 @@ public class Start {
         }
 
         System.out.println("Total de erros: " + exs.size());
-        
+
         for (Exception e : exs) {
             System.out.println(e.getMessage());
         }
