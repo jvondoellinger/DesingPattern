@@ -3,9 +3,9 @@ package pack.person;
 public class PersonStrategy {
     private PersonStrategy() {}
 
-    public static void validate(Person person, IValidator validator) {
+    public static void validate(Person person, IValidator validator) { // Abstract validator method!
         validator.validate(person);
-    } // Abstract validator method!
+    }
 
     interface IValidator {
         void validate(Person person);

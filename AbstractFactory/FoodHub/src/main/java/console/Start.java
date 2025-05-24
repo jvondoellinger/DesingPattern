@@ -1,9 +1,6 @@
 package console;
 
-import pack.BurgerFactory;
-import pack.Burguer;
-import pack.Food;
-import pack.HotDogFactory;
+import pack.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +30,16 @@ public class Start {
         printOptions();
         int option;
         while ((option = util.readInt()) != 0) {
-            Food food = null;
+            FoodFactory factory = null;
             switch (option) {
                 case -1:
                     System.out.println("fudeo");
                     break;
                 case 1:
-                    food =new HotDogFactory().getFood();
+                    factory = new HotDogFactory();
                     break;
                 case 2:
-                    food = new BurgerFactory().getFood();
+                    factory = new BurgerFactory();
                     break;
                 case 3:
                     printOrder();
@@ -51,7 +48,7 @@ public class Start {
                     printOrder();
                     System.out.println("Select the index, showed in this order!");
                     var index = util.readInt();
-                    if(index > order.size() -1 || index == -1) {
+                    if (index > order.size() - 1 || index == -1) {
                         System.out.println("Invalid number");
                         break;
                     }
@@ -64,7 +61,7 @@ public class Start {
                     printOrder();
                     System.out.println("Select the index, showed in this order!");
                     var index2 = util.readInt();
-                    if(index2 > order.size() || index2 == -1) {
+                    if (index2 > order.size() || index2 == -1) {
                         System.out.println("Invalid number");
                         break;
                     }
@@ -81,15 +78,15 @@ public class Start {
                     break;
                 default:
                     System.out.println("Invalid option");
-            };
-            if(food != null) {
+            }
+            ;
+            var food = factory.getFood();
+            if (food != null) {
                 order.add(food);
             }
-
         }
-
-
     }
+
 
     private static void printOptions() {
         System.out.println("1 - HotDog");
