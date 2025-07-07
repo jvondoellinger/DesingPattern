@@ -1,7 +1,9 @@
 package service.impl.email;
 
+import configuration.enviroment.EnvironmentGetter;
+import service.impl.email.config.SmtpConfig;
+import service.impl.email.config.UserEmailConfig;
 import service.interfaces.INotification;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -12,12 +14,13 @@ import java.util.concurrent.TimeUnit;
 public class EmailNotification implements INotification {
     final boolean auth = true;
     final boolean startTls = true;
-    final String host = "smtp.sendgrid.net";
-    final Integer smtpPort = 587;
-    final String username = "username";
-    final String password = "key";
+    final SmtpConfig smtpConfig;
+    final UserEmailConfig userEmailConfig;
 
-    public EmailNotification() {}
+    public EmailNotification(EnvironmentGetter configuration) {
+        smtpConfig = new SmtpConfig(configuration);
+        userEmailConfig = new UserEmailConfig(configuration);
+    }
 
     @Override
     public CompletableFuture<Void> send(String content, String replyTo) {
@@ -36,16 +39,15 @@ public class EmailNotification implements INotification {
         var props = new Properties();
         props.put("mail.smtp.auth", auth);
         props.put("mail.smtp.starttls.enable", startTls);
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", smtpPort.toString());
+        props.put("mail.smtp.host", smtpConfig.getHost());
+        props.put("mail.smtp.port", smtpConfig.getPort());
         return Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
+                return new PasswordAuthentication(userEmailConfig.getUsername(), userEmailConfig.getPassword());
             }
         });
     }
-
     private Message makeMessage(Session session, String email, String content) throws MessagingException {
         var message = new MimeMessage(session);
         message.setFrom(new InternetAddress(email));

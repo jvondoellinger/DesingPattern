@@ -1,4 +1,4 @@
-package configuration;
+package configuration.singleton;
 
 import java.util.Objects;
 import java.util.Scanner;

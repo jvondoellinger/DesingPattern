@@ -1,20 +1,52 @@
 package entity;
 
+import org.bson.BsonType;
+import org.bson.codecs.pojo.annotations.BsonId;
+import org.bson.codecs.pojo.annotations.BsonRepresentation;
+
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 public abstract class RequiredDatabaseFields {
+    @BsonId
+    @BsonRepresentation(BsonType.OBJECT_ID)
     protected String id;
-    protected OffsetDateTime createdAt;
-    protected OffsetDateTime updatedAt;
+    protected LocalDateTime createdAt;
+    protected LocalDateTime updatedAt;
 
-    protected RequiredDatabaseFields() {
-        this.id = UUID.randomUUID().toString();
-        this.createdAt = OffsetDateTime.now();
-        this.updatedAt = OffsetDateTime.now();
+    public RequiredDatabaseFields() {
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
+    // Event
     public void onUpdated() {
-        this.createdAt = OffsetDateTime.now();
+        this.createdAt = LocalDateTime.now();
+    }
+
+    // Getter
+    public String getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    // Setter
+    protected void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    protected void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    protected void setId(String id) {
+        this.id = id;
     }
 }

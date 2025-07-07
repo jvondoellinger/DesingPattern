@@ -7,7 +7,7 @@ public class Game extends RequiredDatabaseFields {
     private String description;
     private BigDecimal price;
 
-    protected Game() {
+    public Game() {
         super();
     }
 

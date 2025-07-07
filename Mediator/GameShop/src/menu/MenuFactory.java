@@ -1,8 +1,8 @@
 package menu;
 
 import anootation.BadCode;
-import configuration.RepositoryConfiguration;
-import configuration.ScannerConfiguration;
+import configuration.singleton.RepositoryConfiguration;
+import configuration.singleton.ScannerConfiguration;
 import service.GameService;
 
 public class MenuFactory {

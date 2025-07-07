@@ -1,14 +1,18 @@
 package menu;
 
 import anootation.BadCode;
+import configuration.enviroment.EnvConfiguration;
 import entity.Game;
 import entity.GameBuilder;
+import reactor.core.publisher.Mono;
 import service.GameService;
+import service.impl.email.EmailNotification;
 import utils.ScannerWrapper;
 
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class GameMenu implements IMenu {
     private final Scanner scanner;
@@ -38,11 +42,17 @@ public class GameMenu implements IMenu {
             while ((opt = wrapper.getInteger()) != exitNum) {
                 // Captura um CompletableFuture<> conforme a opção selecionada!!
                 future = switch (opt) {
-                    case 1 -> findAndPrint();
+                    //case 1 -> selectGame();
                     case 2 -> findAllAndPrint();
                     case 3 -> create(wrapper);
                     default -> null;
                 };
+                try{
+                    selectGame().block();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage() + " Exception");
+                    System.out.println(e.getStackTrace() + " Stack trace");
+                }
                 // Validando a opção será validada aqui!
                 if(Objects.isNull(future)) {
                     System.out.println("invalid Option!");
@@ -51,6 +61,18 @@ public class GameMenu implements IMenu {
         System.out.println("Exiting..."); // Saindo desse menu!
         return future; // Caso não possua opção valida, vai dar erro. Preciso corrigir isso depois!
     }
+
+    private Mono<Void> selectGame() {
+        System.out.println("What's the game identifier?");
+        var id = scanner.next();
+        return service.get(id).map(game -> {
+            var notification = new EmailNotification(EnvConfiguration.getConfiguration());
+            var next = new GameOperationsMenu(scanner, service, game, notification);
+            return Mono.fromFuture(next.show());
+        }).switchIfEmpty(Mono.fromRunnable(() -> System.out.println("Game not found with id: " + id)))
+                .then();
+    }
+
 
     private CompletableFuture<Void> findAndPrint() {
         return CompletableFuture.runAsync(() -> {

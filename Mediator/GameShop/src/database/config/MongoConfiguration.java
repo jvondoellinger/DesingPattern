@@ -21,8 +21,12 @@ public class MongoConfiguration {
 
     private CodecRegistry makeCodecRegistry() {
         return CodecRegistries.fromRegistries(
-                    MongoClientSettings.getDefaultCodecRegistry(),
-                    CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
+                MongoClientSettings.getDefaultCodecRegistry(),
+                CodecRegistries.fromProviders(
+                        PojoCodecProvider.builder()
+                                .automatic(true)
+                                .build()
+                )
         );
     }
 
